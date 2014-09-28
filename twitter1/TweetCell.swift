@@ -9,6 +9,20 @@
 import UIKit
 
 
+private let prettyRelativeDateFormatter = NSDateFormatter()
+
+
+func prettyRelativeDate(date: NSDate) -> String {
+    var hours = date.timeIntervalSinceNow / (60 * 60)
+    if -24 < hours {
+        return "\(-Int(hours))h"
+    }
+    prettyRelativeDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+    prettyRelativeDateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
+    return prettyRelativeDateFormatter.stringFromDate(date)
+}
+
+
 class TweetCell: UITableViewCell {
     var tweet: TwitterTweet?
     @IBOutlet weak var authorImage: UIImageView!
@@ -22,8 +36,10 @@ class TweetCell: UITableViewCell {
         nameLabel.text = tweet.user.name
         screennameLabel.text = "@\(tweet.user.screenname)"
         tweetLabel.text = tweet.text
-        // TODO -- authorImage
-        // TODO -- createdLabel
+        authorImage.setImageWithURL(tweet.user.profileImageURL)
+        authorImage.layer.cornerRadius = 8.0
+        authorImage.layer.masksToBounds = true
+        createdLabel.text = prettyRelativeDate(tweet.createdAt)
     }
 
 //    override func awakeFromNib() {

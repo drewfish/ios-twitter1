@@ -9,16 +9,15 @@
 import UIKit
 
 
-typealias TweetID = UInt64
 private let DEFAULTS_KEY_TWITTER_SESSION = "twitterSession"
 private let CONSUMER_KEY = "KL2KHoLzh70IcEzT79xz2PSdf"
 private let CONSUMER_SECRET = "a9JUy0xVhx9wcRjjTjEE1FlMAZDGm7LFvKiK5jmpXP7g2dD3zo"
 let TWITTER_NOTIFY_SESSION_CREATED = "session-created"
 let TWITTER_NOTIFY_SESSION_CLEARED = "session-cleared"
+let twitterDateFormatter = NSDateFormatter()
 
 
 class Twitter: BDBOAuth1RequestOperationManager {
-
     var sessionUser: TwitterUser? {
         get {
             if _sessionUser == nil {
@@ -44,6 +43,7 @@ class Twitter: BDBOAuth1RequestOperationManager {
     // still no idea why I need to make this
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        twitterDateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
     }
 
     override init() {
@@ -52,6 +52,7 @@ class Twitter: BDBOAuth1RequestOperationManager {
             consumerKey: CONSUMER_KEY,
             consumerSecret: CONSUMER_SECRET
         )
+        twitterDateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
     }
 
     func createSession(done: (error: NSError?) -> Void) {
@@ -97,25 +98,25 @@ class Twitter: BDBOAuth1RequestOperationManager {
                         (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                         self.sessionUser = TwitterUser(dictionary: response as NSDictionary)
                         NSNotificationCenter.defaultCenter().postNotificationName(TWITTER_NOTIFY_SESSION_CREATED, object: nil)
-                        if let gotOp = self.sessionCreateDone {
+                        if let done = self.sessionCreateDone {
                             self.sessionCreateDone = nil
-                            gotOp(error: nil)
+                            done(error: nil)
                         }
                     },
                     failure: {
                         (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-                        if let gotOp = self.sessionCreateDone {
+                        if let done = self.sessionCreateDone {
                             self.sessionCreateDone = nil
-                            gotOp(error: error)
+                            done(error: error)
                         }
                     }
                 )
             },
             failure: {
                 (error: NSError?) -> Void in
-                if let gotOp = self.sessionCreateDone {
+                if let done = self.sessionCreateDone {
                     self.sessionCreateDone = nil
-                    gotOp(error: error)
+                    done(error: error)
                 }
             }
         )
@@ -128,17 +129,17 @@ class Twitter: BDBOAuth1RequestOperationManager {
     }
 
     func homeStatuses(
-        #sinceID: TweetID?,
-        maxID: TweetID?,
+        #sinceID: Int?,
+        maxID: Int?,
         done: (tweets: [TwitterTweet]?, error: NSError?) -> Void
     )
     {
-        var params = NSDictionary()
-        if let gotSinceID = sinceID {
-            params.setValue("\(gotSinceID)", forKey: "since_id")
+        var params = NSMutableDictionary()
+        if let id = sinceID {
+            params.setValue(NSNumber(integer: id), forKey: "since_id")
         }
-        if let gotMaxID = maxID {
-            params.setValue("\(gotMaxID)", forKey: "max_id")
+        if let id = maxID {
+            params.setValue(NSNumber(integer: id), forKey: "max_id")
         }
         GET(
             "1.1/statuses/home_timeline.json",
@@ -158,16 +159,24 @@ class Twitter: BDBOAuth1RequestOperationManager {
         )
     }
 
-    func tweet(fields: (), done: (error: NSError?) -> Void) {
-        // TODO
+    func tweet(
+        text: String,
+        replyID: Int?,
+        done: (newTweet: TwitterTweet?, error: NSError?) -> Void
+    )
+    {
+        // TODO -- api call
+        //  * POST 1.1/statuses/update.json
+        //  * status {String} required
+        //  * in_reply_to_status_id {Int} (optional) replyID
     }
 
-    func retweet(tweetID: TweetID, done: (error: NSError?) -> Void) {
-        // TODO
+    func retweet(tweet: TwitterTweet, done: (error: NSError?) -> Void) {
+        // TODO -- api call
     }
 
-    func favorite(tweetID: TweetID, done: (error: NSError?) -> Void) {
-        // TODO
+    func favorite(tweet: TwitterTweet, done: (error: NSError?) -> Void) {
+        // TODO -- api call
     }
 
     private var _sessionUser: TwitterUser?
@@ -179,7 +188,7 @@ class TwitterUser: NSObject {
     var name: String
     var screenname: String
     var profileImageURL: NSURL
-    var dictionary: NSDictionary
+    var dictionary: NSDictionary    // mainly for easy serialization
 
     init(dictionary: NSDictionary) {
         self.dictionary = dictionary
@@ -191,12 +200,24 @@ class TwitterUser: NSObject {
 
 
 class TwitterTweet: NSObject {
+    var id: Int
     var user: TwitterUser
     var text: String
+    var favoriteCount: Int
+    var didFavorite: Bool
+    var retweetCount: Int
+    var didRetweet: Bool
+    var createdAt: NSDate
 
     init(dictionary: NSDictionary) {
+        id = (dictionary["id"] as NSNumber).integerValue
         user = TwitterUser(dictionary: dictionary["user"] as NSDictionary)
         text = dictionary["text"] as String
+        favoriteCount = dictionary["favorite_count"] as Int
+        didFavorite = 0 == dictionary["favorited"] as Int
+        retweetCount = dictionary["retweet_count"] as Int
+        didRetweet = 0 == dictionary["retweeted"] as Int
+        createdAt = twitterDateFormatter.dateFromString(dictionary["created_at"] as String)!
     }
 }
 

@@ -2,7 +2,7 @@
 
 This is a simple demo Twitter client.
 
-**Time spent:** 5 hours
+**Time spent:** 8 hours
 
 
 ## Completed User Stories
@@ -10,12 +10,12 @@ This is a simple demo Twitter client.
 * [x] User can sign in using OAuth login flow
 * [x] User can view last 20 tweets from their home timeline
 * [x] The current signed in user will be persisted across restarts
-* [ ] In the home timeline, user can view tweet with the user's: 
+* [x] In the home timeline, user can view tweet with the user's: 
     * profile picture
     * username
     * tweet text
     * timestamp
-* [ ] User can pull to refresh
+* [x] User can pull to refresh
 * [ ] User can compose a new tweet by tapping on a compose button.
 * [ ] User can tap on a tweet to view it, with controls to retweet, favorite, and reply.
 * [ ] Optional: When composing, you should have a countdown in the upper right for the tweet limit.
@@ -29,7 +29,7 @@ This is a simple demo Twitter client.
 
 ## Notes
 
-grrr... autolayout
+* pull-to-refresh does an incremental load (uses `since_id`)
 
 
 ## Walkthrough of All User Stories

@@ -9,23 +9,23 @@
 import UIKit
 
 
-class HomeViewController: UIViewController, UITableViewDataSource {
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var tweets: [TwitterTweet]?
     @IBOutlet weak var tableView: UITableView!
+    var refreshControl: UIRefreshControl?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
         tableView.dataSource = self
-        MMProgressHUD.showWithStatus("Loading...")
-        twitterModel.homeStatuses(sinceID: nil, maxID: nil) {
-            (tweets: [TwitterTweet]?, error: NSError?) -> Void in
-            MMProgressHUD.dismiss()
-            if error != nil {
-                // TODO -- handle error
-            }
-            self.tweets = tweets
-            self.tableView.reloadData()
-        }
+        tableView.rowHeight = UITableViewAutomaticDimension
+
+        refreshControl = UIRefreshControl()
+        refreshControl!.attributedTitle = NSAttributedString(string: "pull to refresh")
+        refreshControl!.addTarget(self, action: "reload", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(refreshControl!)
+
+        reload()
     }
 
     @IBAction func onLogout(sender: AnyObject) {
@@ -34,6 +34,38 @@ class HomeViewController: UIViewController, UITableViewDataSource {
 
     @IBAction func onCompose(sender: AnyObject) {
         // TODO -- push to compose view
+    }
+
+    func reload() {
+        var sinceID: Int?
+        if let old = tweets {
+            sinceID = old.reduce(-1, combine: {
+                (running: Int, tweet: TwitterTweet) -> Int in
+                return max(running, tweet.id)
+            })
+        }
+        self.refreshControl?.endRefreshing()
+        MMProgressHUD.showWithStatus("Loading...")
+        twitterModel.homeStatuses(sinceID: sinceID, maxID: nil) {
+            (tweets: [TwitterTweet]?, error: NSError?) -> Void in
+            MMProgressHUD.dismiss()
+            if error != nil {
+                // TODO -- handle error
+                println(error)
+                return
+            }
+            if sinceID == nil {
+                self.tweets = tweets
+            } else {
+                // the returned tweets are newer than the ones we have
+                var more = tweets!      // can't use `tweets!` as an lvalue apparently
+                if self.tweets != nil {
+                    more += self.tweets!
+                }
+                self.tweets = more
+            }
+            self.tableView.reloadData()
+        }
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -52,17 +84,9 @@ class HomeViewController: UIViewController, UITableViewDataSource {
 
 //    override func didReceiveMemoryWarning() {
 //        super.didReceiveMemoryWarning()
-//        // Dispose of any resources that can be recreated.
 //    }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+//    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+//    }
 }
 
