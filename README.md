@@ -8,7 +8,7 @@ This is a simple demo Twitter client.
 ## Completed User Stories
 
 * [x] User can sign in using OAuth login flow
-* [ ] User can view last 20 tweets from their home timeline
+* [x] User can view last 20 tweets from their home timeline
 * [x] The current signed in user will be persisted across restarts
 * [ ] In the home timeline, user can view tweet with the user's: 
     * profile picture
@@ -29,6 +29,7 @@ This is a simple demo Twitter client.
 
 ## Notes
 
+grrr... autolayout
 
 
 ## Walkthrough of All User Stories
@@ -36,5 +37,10 @@ This is a simple demo Twitter client.
 ![Video Walkthrough](hw.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+
+## Attributions
+
+* Retweet by Simple Icons from The Noun Project
 
 

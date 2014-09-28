@@ -127,8 +127,35 @@ class Twitter: BDBOAuth1RequestOperationManager {
         NSNotificationCenter.defaultCenter().postNotificationName(TWITTER_NOTIFY_SESSION_CLEARED, object: nil)
     }
 
-    func homeStatuses(options: (), done: (statuses: [TwitterTweet]?, error: NSError?) -> Void) {
-        // TODO
+    func homeStatuses(
+        #sinceID: TweetID?,
+        maxID: TweetID?,
+        done: (tweets: [TwitterTweet]?, error: NSError?) -> Void
+    )
+    {
+        var params = NSDictionary()
+        if let gotSinceID = sinceID {
+            params.setValue("\(gotSinceID)", forKey: "since_id")
+        }
+        if let gotMaxID = maxID {
+            params.setValue("\(gotMaxID)", forKey: "max_id")
+        }
+        GET(
+            "1.1/statuses/home_timeline.json",
+            parameters: params,
+            success: {
+                (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                var tweets: [TwitterTweet] = []
+                for dictionary in response as NSArray {
+                    tweets.append(TwitterTweet(dictionary: dictionary as NSDictionary))
+                }
+                done(tweets: tweets, error: nil)
+            },
+            failure: {
+                (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                done(tweets: nil, error: error)
+            }
+        )
     }
 
     func tweet(fields: (), done: (error: NSError?) -> Void) {
