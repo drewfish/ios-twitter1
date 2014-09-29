@@ -17,6 +17,7 @@ func prettyRelativeDate(date: NSDate) -> String {
     if -24 < hours {
         return "\(-Int(hours))h"
     }
+    // FUTURE -- figure out how to create/configure these dateformatters only once
     prettyRelativeDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
     prettyRelativeDateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
     return prettyRelativeDateFormatter.stringFromDate(date)

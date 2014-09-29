@@ -82,11 +82,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        var dest = segue.destinationViewController as TweetViewController
+        var indexPath = tableView.indexPathForSelectedRow()
+        var tweet = tweets?[indexPath!.row]
+        dest.tweet = tweet
+    }
+
 //    override func didReceiveMemoryWarning() {
 //        super.didReceiveMemoryWarning()
-//    }
-
-//    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
 //    }
 }
 

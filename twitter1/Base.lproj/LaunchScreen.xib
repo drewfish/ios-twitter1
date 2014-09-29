@@ -24,7 +24,7 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Retweet by Simple Icons from The Noun Project" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZfB-ha-OgM">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Retweet by im icons from The Noun Project Star by Edward Boatman from The Noun Project" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZfB-ha-OgM">
                     <rect key="frame" x="94" y="223" width="293" height="176"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>

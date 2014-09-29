@@ -171,12 +171,48 @@ class Twitter: BDBOAuth1RequestOperationManager {
         //  * in_reply_to_status_id {Int} (optional) replyID
     }
 
-    func retweet(tweet: TwitterTweet, done: (error: NSError?) -> Void) {
-        // TODO -- api call
+    func retweet(
+        tweet: TwitterTweet,
+        done: (error: NSError?) -> Void
+    )
+    {
+        POST(
+            "1.1/statuses/retweet/\(tweet.id).json",
+            parameters: nil,
+            success: {
+                (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                tweet.retweetCount += 1
+                tweet.didRetweet = true
+                done(error: nil)
+            },
+            failure: {
+                (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                done(error: error)
+            }
+        )
     }
 
-    func favorite(tweet: TwitterTweet, done: (error: NSError?) -> Void) {
-        // TODO -- api call
+    func favorite(
+        tweet: TwitterTweet,
+        done: (error: NSError?) -> Void
+    )
+    {
+        var params = NSMutableDictionary()
+        params.setValue(NSNumber(integer: tweet.id), forKey: "id")
+        POST(
+            "1.1/favorites/create.json",
+            parameters: params,
+            success: {
+                (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                tweet.favoriteCount += 1
+                tweet.didFavorite = true
+                done(error: nil)
+            },
+            failure: {
+                (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                done(error: error)
+            }
+        )
     }
 
     private var _sessionUser: TwitterUser?
@@ -214,9 +250,9 @@ class TwitterTweet: NSObject {
         user = TwitterUser(dictionary: dictionary["user"] as NSDictionary)
         text = dictionary["text"] as String
         favoriteCount = dictionary["favorite_count"] as Int
-        didFavorite = 0 == dictionary["favorited"] as Int
+        didFavorite = 0 != dictionary["favorited"] as Int
         retweetCount = dictionary["retweet_count"] as Int
-        didRetweet = 0 == dictionary["retweeted"] as Int
+        didRetweet = 0 != dictionary["retweeted"] as Int
         createdAt = twitterDateFormatter.dateFromString(dictionary["created_at"] as String)!
     }
 }
