@@ -51,7 +51,7 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         authorImage.setImageWithURL(twitterModel.sessionUser!.profileImageURL)
         nameLabel.text = twitterModel.sessionUser!.name
-        screennameLabel.text = twitterModel.sessionUser!.screenname
+        screennameLabel.text = "@\(twitterModel.sessionUser!.screenname)"
         if let tweet = replyingTo {
             tweetView.text = "@\(tweet.user.screenname) "
         }
