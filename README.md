@@ -2,7 +2,7 @@
 
 This is a simple demo Twitter client.
 
-**Time spent:** 13 hours
+**Time spent:** 15 hours
 
 
 ## Completed User Stories
