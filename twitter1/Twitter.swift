@@ -14,6 +14,7 @@ private let CONSUMER_KEY = "KL2KHoLzh70IcEzT79xz2PSdf"
 private let CONSUMER_SECRET = "a9JUy0xVhx9wcRjjTjEE1FlMAZDGm7LFvKiK5jmpXP7g2dD3zo"
 let TWITTER_NOTIFY_SESSION_CREATED = "session-created"
 let TWITTER_NOTIFY_SESSION_CLEARED = "session-cleared"
+let TWITTER_NOTIFY_TWEET_POSTED = "tweet-posted"
 let twitterDateFormatter = NSDateFormatter()
 
 
@@ -161,14 +162,29 @@ class Twitter: BDBOAuth1RequestOperationManager {
 
     func tweet(
         text: String,
-        replyID: Int?,
+        replyingTo: TwitterTweet?,
         done: (newTweet: TwitterTweet?, error: NSError?) -> Void
     )
     {
-        // TODO -- api call
-        //  * POST 1.1/statuses/update.json
-        //  * status {String} required
-        //  * in_reply_to_status_id {Int} (optional) replyID
+        var params = NSMutableDictionary()
+        params.setValue(NSString(string: text), forKey: "status")
+        if let tweet = replyingTo {
+            params.setValue(NSNumber(integer: tweet.id), forKey: "in_reply_to_status_id")
+        }
+        POST(
+            "1.1/statuses/update.json",
+            parameters: params,
+            success: {
+                (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                var newTweet = TwitterTweet(dictionary: response as NSDictionary)
+                NSNotificationCenter.defaultCenter().postNotificationName(TWITTER_NOTIFY_TWEET_POSTED, object: nil, userInfo: ["tweet": newTweet])
+                done(newTweet: newTweet, error: nil)
+            },
+            failure: {
+                (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                done(newTweet: nil, error: error)
+            }
+        )
     }
 
     func retweet(

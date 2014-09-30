@@ -25,6 +25,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         refreshControl!.addTarget(self, action: "reload", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl!)
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onTweetPosted:", name: TWITTER_NOTIFY_TWEET_POSTED, object: nil)
+
         reload()
     }
 
@@ -33,7 +35,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     @IBAction func onCompose(sender: AnyObject) {
-        // TODO -- push to compose view
+        performSegueWithIdentifier("composeSegue", sender: self)
+    }
+
+    func onTweetPosted(notification: NSNotification) {
+        var newTweet = notification.userInfo!["tweet"] as TwitterTweet
+        tweets?.insert(newTweet, atIndex: 0)
+        tableView.reloadData()
+        var path = NSIndexPath(forRow: 0, inSection: 0)
+        tableView.selectRowAtIndexPath(path, animated: false, scrollPosition: .Top)
     }
 
     func reload() {
@@ -82,15 +92,21 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        var dest = segue.destinationViewController as TweetViewController
-        var indexPath = tableView.indexPathForSelectedRow()
-        var tweet = tweets?[indexPath!.row]
-        dest.tweet = tweet
+    func newTweet(tweet: TwitterTweet) {
+        tweets?.insert(tweet, atIndex: 0)
     }
 
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        var dest = segue.destinationViewController as UIViewController
+        if let vc = dest as? TweetViewController {
+            var indexPath = tableView.indexPathForSelectedRow()
+            var tweet = tweets?[indexPath!.row]
+            vc.tweet = tweet
+        }
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: TWITTER_NOTIFY_TWEET_POSTED, object: nil)
+    }
 }
 

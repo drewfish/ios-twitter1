@@ -42,13 +42,5 @@ class TweetCell: UITableViewCell {
         authorImage.layer.masksToBounds = true
         createdLabel.text = prettyRelativeDate(tweet.createdAt)
     }
-
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//    }
-
-//    override func setSelected(selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//    }
 }
 

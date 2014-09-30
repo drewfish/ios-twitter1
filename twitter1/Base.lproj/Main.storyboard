@@ -70,8 +70,87 @@
                     <view key="view" contentMode="scaleToFill" id="geO-ey-e36">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Va5-LQ-dGC">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="RQr-Kp-c63"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem id="Xul-3b-Iaw">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="PRc-aH-ZWn">
+                                            <connections>
+                                                <action selector="onCancel:" destination="zbi-f5-i7N" id="Enl-v5-fBa"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Tweet" id="mUJ-D1-7VO">
+                                            <connections>
+                                                <action selector="onTweet:" destination="zbi-f5-i7N" id="ONu-5G-h6r"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PCJ-TH-VB7" userLabel="authorImage">
+                                <rect key="frame" x="16" y="72" width="88" height="88"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="88" id="GTe-Gk-UmY"/>
+                                    <constraint firstAttribute="height" constant="88" id="HZI-Bp-O5O"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53D-1u-PvW" userLabel="nameLabel">
+                                <rect key="frame" x="112" y="110" width="472" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="6Yd-y1-hzr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@screenname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kkU-9i-aIF" userLabel="screennameLabel">
+                                <rect key="frame" x="112" y="139" width="472" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="6ig-pq-iuH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uzo-pF-szB" userLabel="tweetView">
+                                <rect key="frame" x="16" y="168" width="568" height="160"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="160" id="Cd8-Ug-2lx"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="twitter"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Uzo-pF-szB" firstAttribute="trailing" secondItem="geO-ey-e36" secondAttribute="trailingMargin" id="28a-gy-RmT"/>
+                            <constraint firstItem="kkU-9i-aIF" firstAttribute="top" secondItem="53D-1u-PvW" secondAttribute="bottom" constant="8" symbolic="YES" id="9mi-vz-6W4"/>
+                            <constraint firstItem="Va5-LQ-dGC" firstAttribute="leading" secondItem="geO-ey-e36" secondAttribute="leading" id="IZW-gU-Zea"/>
+                            <constraint firstItem="PCJ-TH-VB7" firstAttribute="top" secondItem="Va5-LQ-dGC" secondAttribute="bottom" constant="8" id="Kbe-wR-HGX"/>
+                            <constraint firstAttribute="trailing" secondItem="Va5-LQ-dGC" secondAttribute="trailing" id="Pwb-Zm-Qri"/>
+                            <constraint firstItem="Va5-LQ-dGC" firstAttribute="top" secondItem="SyC-PS-NoA" secondAttribute="bottom" id="f02-Wj-e2g"/>
+                            <constraint firstItem="Uzo-pF-szB" firstAttribute="top" secondItem="PCJ-TH-VB7" secondAttribute="bottom" constant="8" symbolic="YES" id="h3E-WT-I2G"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="53D-1u-PvW" secondAttribute="trailing" id="kUm-GV-aUm"/>
+                            <constraint firstItem="Uzo-pF-szB" firstAttribute="leading" secondItem="geO-ey-e36" secondAttribute="leadingMargin" id="mk8-LH-iHg"/>
+                            <constraint firstItem="kkU-9i-aIF" firstAttribute="leading" secondItem="PCJ-TH-VB7" secondAttribute="trailing" constant="8" symbolic="YES" id="pHU-SL-1Ue"/>
+                            <constraint firstItem="53D-1u-PvW" firstAttribute="leading" secondItem="PCJ-TH-VB7" secondAttribute="trailing" constant="8" symbolic="YES" id="sbB-sL-KOy"/>
+                            <constraint firstItem="kkU-9i-aIF" firstAttribute="trailing" secondItem="geO-ey-e36" secondAttribute="trailingMargin" id="tGS-Jj-ksn"/>
+                            <constraint firstItem="PCJ-TH-VB7" firstAttribute="bottom" secondItem="kkU-9i-aIF" secondAttribute="bottom" id="wbO-hV-IYb"/>
+                            <constraint firstItem="PCJ-TH-VB7" firstAttribute="leading" secondItem="geO-ey-e36" secondAttribute="leadingMargin" id="y8E-El-x2e"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="authorImage" destination="PCJ-TH-VB7" id="gDP-bM-evY"/>
+                        <outlet property="nameLabel" destination="53D-1u-PvW" id="BuB-Va-af1"/>
+                        <outlet property="navigationItem" destination="Xul-3b-Iaw" id="2aw-lZ-jDf"/>
+                        <outlet property="screennameLabel" destination="kkU-9i-aIF" id="C5t-kc-iNH"/>
+                        <outlet property="tweetView" destination="Uzo-pF-szB" id="jBN-o0-fD2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uQa-f5-bxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -196,6 +275,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="8Fs-Gm-5z8" id="irs-ZF-Hfg"/>
+                        <segue destination="zbi-f5-i7N" kind="presentation" identifier="composeSegue" id="gLN-Am-6Yv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rt4-VY-4RL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -354,7 +434,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Tweet" id="52I-jl-64w">
-                        <barButtonItem key="rightBarButtonItem" systemItem="reply" id="Vpi-iK-kFX"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="reply" id="Vpi-iK-kFX">
+                            <connections>
+                                <action selector="onReply:" destination="gPc-z8-JKJ" id="9o7-Kf-8nO"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="authorImage" destination="RDW-Q3-m6n" id="s4h-Cs-5Ow"/>
@@ -366,6 +450,7 @@
                         <outlet property="retweetsLabel" destination="zQ5-RH-KgS" id="bfX-Yn-Irh"/>
                         <outlet property="screennameLabel" destination="ZrC-Ez-POq" id="iqq-Nj-9Dx"/>
                         <outlet property="tweetLabel" destination="RcK-yT-2kG" id="5vm-dM-1ST"/>
+                        <segue destination="zbi-f5-i7N" kind="presentation" identifier="replySegue" id="ZrH-1U-0zg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SKF-x3-qWp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -397,4 +482,7 @@
         <image name="retweetOff" width="600" height="600"/>
         <image name="retweetOn" width="600" height="600"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="gLN-Am-6Yv"/>
+    </inferredMetricsTieBreakers>
 </document>

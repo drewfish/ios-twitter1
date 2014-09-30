@@ -24,6 +24,10 @@ class TweetViewController: UIViewController {
     @IBOutlet weak var retweetButton: UIButton!
     @IBOutlet weak var favoriteButton: UIButton!
 
+    @IBAction func onReply(sender: AnyObject) {
+        performSegueWithIdentifier("replySegue", sender: self)
+    }
+
     @IBAction func onRetweet() {
         if retweetButton.selected {
             // FUTURE -- un-retweet
@@ -68,6 +72,12 @@ class TweetViewController: UIViewController {
         }
     }
 
+    // this is called when a reply to this tweet is posted
+    func onTweetPosted(notification: NSNotification) {
+        // go back to where we came from
+        navigationController?.popToRootViewControllerAnimated(true)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -86,13 +96,18 @@ class TweetViewController: UIViewController {
         favoritesLabel.text = "\(tweet!.favoriteCount)"
         retweetButton.selected = tweet!.didRetweet
         favoriteButton.selected = tweet!.didFavorite
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onTweetPosted:", name: TWITTER_NOTIFY_TWEET_POSTED, object: nil)
     }
 
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//    }
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: TWITTER_NOTIFY_TWEET_POSTED, object: nil)
+    }
 
-//    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-//    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if let compose = segue.destinationViewController as? ComposeViewController {
+            compose.replyingTo = tweet
+        }
+    }
 }
 
