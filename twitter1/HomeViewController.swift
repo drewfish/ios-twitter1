@@ -43,7 +43,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tweets?.insert(newTweet, atIndex: 0)
         tableView.reloadData()
         var path = NSIndexPath(forRow: 0, inSection: 0)
-        tableView.selectRowAtIndexPath(path, animated: false, scrollPosition: .Top)
+        tableView.selectRowAtIndexPath(path, animated: true, scrollPosition: .Top)
     }
 
     func reload() {
@@ -90,10 +90,6 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var cell = self.tableView.dequeueReusableCellWithIdentifier("TweetCell") as TweetCell
         cell.setTweet(tweets![indexPath.row])
         return cell
-    }
-
-    func newTweet(tweet: TwitterTweet) {
-        tweets?.insert(tweet, atIndex: 0)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {

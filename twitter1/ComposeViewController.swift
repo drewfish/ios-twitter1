@@ -59,7 +59,7 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onTweetPosted:", name: TWITTER_NOTIFY_TWEET_POSTED, object: nil)
         tweetView.becomeFirstResponder()
 
-        // we create this using interface builder
+        // we can't create this using interface builder
         charCountItem = UIBarButtonItem()
         charCountItem.title = "\(140 - tweetView.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))"
         charCountItem.enabled = false
