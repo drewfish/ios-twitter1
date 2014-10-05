@@ -240,6 +240,9 @@ class TwitterUser: NSObject {
     var name: String
     var screenname: String
     var profileImageURL: NSURL
+    var tweetsCount: Int
+    var followersCount: Int
+    var followingCount: Int
     var dictionary: NSDictionary    // mainly for easy serialization
 
     init(dictionary: NSDictionary) {
@@ -247,6 +250,9 @@ class TwitterUser: NSObject {
         name = dictionary["name"] as String
         screenname = dictionary["screen_name"] as String
         profileImageURL = NSURL(string: dictionary["profile_image_url"] as String)
+        tweetsCount = dictionary["statuses_count"] as Int
+        followersCount = dictionary["followers_count"] as Int
+        followingCount = dictionary["friends_count"] as Int
     }
 }
 

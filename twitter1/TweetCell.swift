@@ -24,13 +24,31 @@ func prettyRelativeDate(date: NSDate) -> String {
 }
 
 
+@objc protocol TweetCellDelegate {
+    func onTap(#tweetCell: TweetCell)
+}
+
+
 class TweetCell: UITableViewCell {
     var tweet: TwitterTweet?
+    var delegate: TweetCellDelegate?
     @IBOutlet weak var authorImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var screennameLabel: UILabel!
     @IBOutlet weak var createdLabel: UILabel!
     @IBOutlet weak var tweetLabel: UILabel!
+
+    func onTap() {
+        delegate?.onTap(tweetCell: self)
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        var tap = UITapGestureRecognizer(target: self, action: "onTap")
+        tap.numberOfTapsRequired = 1
+        tap.numberOfTouchesRequired = 1
+        authorImage.addGestureRecognizer(tap)
+    }
 
     func setTweet(tweet: TwitterTweet) {
         self.tweet = tweet

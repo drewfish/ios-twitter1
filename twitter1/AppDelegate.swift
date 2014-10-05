@@ -35,8 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onSessionCleared", name: TWITTER_NOTIFY_SESSION_CLEARED, object: nil)
 
         if twitterModel.sessionUser != nil {
-            var page = storyboard.instantiateViewControllerWithIdentifier("homePage") as UIViewController
-            window?.rootViewController = page
+            var nav = storyboard.instantiateViewControllerWithIdentifier("tweetListNav") as UINavigationController
+            var page = nav.topViewController as TweetListViewController
+            page.contentType = .Home
+            window?.rootViewController = nav
         }
 
         return true

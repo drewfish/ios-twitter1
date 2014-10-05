@@ -1,5 +1,5 @@
 //
-//  HomeViewController.swift
+//  TweetListViewController.swift
 //  twitter1
 //
 //  Created by Andrew Folta on 9/27/14.
@@ -9,7 +9,14 @@
 import UIKit
 
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class TweetListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TweetCellDelegate {
+
+    enum ContentType: String {
+        case Home = "Home"
+        case Mentions = "Mentions"
+    }
+
+    var contentType = ContentType.Home
     var tweets: [TwitterTweet]?
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl?
@@ -19,6 +26,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
+
+        navigationItem.title = contentType.toRaw()
 
         refreshControl = UIRefreshControl()
         refreshControl!.attributedTitle = NSAttributedString(string: "pull to refresh")
@@ -44,6 +53,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.reloadData()
         var path = NSIndexPath(forRow: 0, inSection: 0)
         tableView.selectRowAtIndexPath(path, animated: true, scrollPosition: .Top)
+    }
+
+    func onTap(tweetCell cell: TweetCell) {
+        var path = tableView.indexPathForCell(cell)
+        tableView.selectRowAtIndexPath(path!, animated: false, scrollPosition: .None)
+        performSegueWithIdentifier("profileSegue", sender: self)
     }
 
     func reload() {
@@ -89,15 +104,19 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = self.tableView.dequeueReusableCellWithIdentifier("TweetCell") as TweetCell
         cell.setTweet(tweets![indexPath.row])
+        cell.delegate = self
         return cell
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         var dest = segue.destinationViewController as UIViewController
+        var indexPath = tableView.indexPathForSelectedRow()
+        var tweet = tweets?[indexPath!.row]
         if let vc = dest as? TweetViewController {
-            var indexPath = tableView.indexPathForSelectedRow()
-            var tweet = tweets?[indexPath!.row]
             vc.tweet = tweet
+        }
+        if let vc = dest as? ProfileViewController {
+            vc.user = tweet!.user
         }
     }
 

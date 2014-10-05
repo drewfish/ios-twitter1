@@ -28,6 +28,10 @@ class TweetViewController: UIViewController {
         performSegueWithIdentifier("replySegue", sender: self)
     }
 
+    @IBAction func onProfile(sender: AnyObject) {
+        performSegueWithIdentifier("profileSegue", sender: self)
+    }
+
     @IBAction func onRetweet() {
         if retweetButton.selected {
             // FUTURE -- un-retweet
@@ -108,6 +112,10 @@ class TweetViewController: UIViewController {
         if let compose = segue.destinationViewController as? ComposeViewController {
             compose.replyingTo = tweet
         }
+        if let profile = segue.destinationViewController as? ProfileViewController {
+            profile.user = tweet!.user
+        }
     }
 }
+
 

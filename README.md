@@ -1,44 +1,38 @@
-# Twitter Client, the First
+# Twitter Client, the Second
 
 This is a simple demo Twitter client.
 
-**Time spent:** 15 hours
+**Time spent:** 3.5 hours
 
 
 ## Completed User Stories
 
-* [x] User can sign in using OAuth login flow
-* [x] User can view last 20 tweets from their home timeline
-* [x] The current signed in user will be persisted across restarts
-* [x] In the home timeline, user can view tweet with the user's: 
-    * profile picture
-    * username
-    * tweet text
-    * timestamp
-* [x] User can pull to refresh
-* [x] User can compose a new tweet by tapping on a compose button.
-* [x] User can tap on a tweet to view it, with controls to...
-    * [x] retweet
-    * [x] favorite
-    * [x] reply
-* [x] Optional: When composing, you should have a countdown in the upper right for the tweet limit.
-* [x] Optional: After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
-* [x] Optional: Retweeting and favoriting should increment the retweet and favorite count.
-* [ ] Optional: User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
-* [x] Optional: Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
-* [ ] Optional: User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
+* [ ] Hamburger menu
+    * [ ] Dragging anywhere in the view should reveal the menu.
+    * [ ] The menu should include links to your profile, the home timeline, and the mentions view.
+    * [ ] The menu can look similar to the LinkedIn menu below or feel free to take liberty with the UI.
+* [x] Profile page
+    * [x] Contains the user header view
+    * [x] Contains a section with the users basic stats: # tweets, # following, # followers
+    * [ ] Optional: Implement the paging view for the user description.
+    * [ ] Optional: As the paging view moves, increase the opacity of the background screen. See the actual Twitter app for this effect
+    * [ ] Optional: Pulling down the profile page should blur and resize the header image.
+* [x] Home Timeline
+    * [x] Tapping on a user image should bring up that user's profile page
+* [ ] Optional: Account switching
+    * [ ] Long press on tab bar to bring up Account view with animation
+    * [ ] Tap account to switch to
+    * [ ] Include a plus button to Add an Account
+    * [ ] Swipe to delete an account
 
 
 ## Notes
 
-* pull-to-refresh does an incremental load (uses `since_id`)
-* when going back from a tweet detail, the scroll of the home page table is messed up
-* in compose view, changes to the countdown are animated (wanted to turn this off but didn't attempt)
 
 
 ## Walkthrough of All User Stories
 
-![Video Walkthrough](hw.gif)
+![Video Walkthrough](h w.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
