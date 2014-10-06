@@ -35,10 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onSessionCleared", name: TWITTER_NOTIFY_SESSION_CLEARED, object: nil)
 
         if twitterModel.sessionUser != nil {
+            var ham = storyboard.instantiateViewControllerWithIdentifier("hamburgerPage") as HamburgerViewController
             var nav = storyboard.instantiateViewControllerWithIdentifier("tweetListNav") as UINavigationController
-            var page = nav.topViewController as TweetListViewController
-            page.contentType = .Home
-            window?.rootViewController = nav
+            ham.viewController = nav
+            window?.rootViewController = ham
         }
 
         return true

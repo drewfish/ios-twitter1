@@ -16,6 +16,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var tweetsLabel: UILabel!
     @IBOutlet weak var followingLabel: UILabel!
     @IBOutlet weak var followersLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +28,7 @@ class ProfileViewController: UIViewController {
         tweetsLabel.text = "\(user!.tweetsCount)"
         followingLabel.text = "\(user!.followingCount)"
         followersLabel.text = "\(user!.followersCount)"
+        descriptionLabel.text = user!.userDescription
     }
 
 }

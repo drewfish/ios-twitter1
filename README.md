@@ -2,15 +2,18 @@
 
 This is a simple demo Twitter client.
 
-**Time spent:** 3.5 hours
+**Time spent:** 11 hours
 
 
 ## Completed User Stories
 
 * [ ] Hamburger menu
-    * [ ] Dragging anywhere in the view should reveal the menu.
-    * [ ] The menu should include links to your profile, the home timeline, and the mentions view.
-    * [ ] The menu can look similar to the LinkedIn menu below or feel free to take liberty with the UI.
+    * [x] Dragging anywhere in the view should reveal the menu.
+    * [ ] The menu should include links to
+        * [ ] your profile
+        * [ ] the home timeline
+        * [ ] the mentions view
+    * The menu can look similar to the LinkedIn menu below or feel free to take liberty with the UI.
 * [x] Profile page
     * [x] Contains the user header view
     * [x] Contains a section with the users basic stats: # tweets, # following, # followers
@@ -28,6 +31,7 @@ This is a simple demo Twitter client.
 
 ## Notes
 
+* burned a lot of hours on wrong approach to hamburger menu
 
 
 ## Walkthrough of All User Stories

@@ -243,6 +243,7 @@ class TwitterUser: NSObject {
     var tweetsCount: Int
     var followersCount: Int
     var followingCount: Int
+    var userDescription: String
     var dictionary: NSDictionary    // mainly for easy serialization
 
     init(dictionary: NSDictionary) {
@@ -253,6 +254,7 @@ class TwitterUser: NSObject {
         tweetsCount = dictionary["statuses_count"] as Int
         followersCount = dictionary["followers_count"] as Int
         followingCount = dictionary["friends_count"] as Int
+        userDescription = dictionary["description"] as? String ?? ""
     }
 }
 

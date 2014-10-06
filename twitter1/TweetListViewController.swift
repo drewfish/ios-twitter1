@@ -21,10 +21,20 @@ class TweetListViewController: UIViewController, UITableViewDataSource, UITableV
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl?
 
+    func setContentType(type: ContentType) {
+        if type != contentType {
+            contentType = type
+            navigationItem.title = contentType.toRaw()
+            tweets = nil
+        }
+        reload()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableViewAutomaticDimension
 
         navigationItem.title = contentType.toRaw()
@@ -110,12 +120,14 @@ class TweetListViewController: UIViewController, UITableViewDataSource, UITableV
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         var dest = segue.destinationViewController as UIViewController
-        var indexPath = tableView.indexPathForSelectedRow()
-        var tweet = tweets?[indexPath!.row]
         if let vc = dest as? TweetViewController {
+            var indexPath = tableView.indexPathForSelectedRow()
+            var tweet = tweets?[indexPath!.row]
             vc.tweet = tweet
         }
         if let vc = dest as? ProfileViewController {
+            var indexPath = tableView.indexPathForSelectedRow()
+            var tweet = tweets?[indexPath!.row]
             vc.user = tweet!.user
         }
     }
