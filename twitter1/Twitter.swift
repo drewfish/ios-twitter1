@@ -135,6 +135,7 @@ class Twitter: BDBOAuth1RequestOperationManager {
         done: (tweets: [TwitterTweet]?, error: NSError?) -> Void
     )
     {
+        // FUTURE -- refactor and unify with mentionsStatuses
         var params = NSMutableDictionary()
         if let id = sinceID {
             params.setValue(NSNumber(integer: id), forKey: "since_id")
@@ -144,6 +145,38 @@ class Twitter: BDBOAuth1RequestOperationManager {
         }
         GET(
             "1.1/statuses/home_timeline.json",
+            parameters: params,
+            success: {
+                (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                var tweets: [TwitterTweet] = []
+                for dictionary in response as NSArray {
+                    tweets.append(TwitterTweet(dictionary: dictionary as NSDictionary))
+                }
+                done(tweets: tweets, error: nil)
+            },
+            failure: {
+                (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                done(tweets: nil, error: error)
+            }
+        )
+    }
+
+    func mentionsStatuses(
+        #sinceID: Int?,
+        maxID: Int?,
+        done: (tweets: [TwitterTweet]?, error: NSError?) -> Void
+    )
+    {
+        // FUTURE -- refactor and unify with homeStatuses
+        var params = NSMutableDictionary()
+        if let id = sinceID {
+            params.setValue(NSNumber(integer: id), forKey: "since_id")
+        }
+        if let id = maxID {
+            params.setValue(NSNumber(integer: id), forKey: "max_id")
+        }
+        GET(
+            "1.1/statuses/mentions_timeline.json",
             parameters: params,
             success: {
                 (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in

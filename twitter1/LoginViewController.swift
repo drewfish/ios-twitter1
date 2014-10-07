@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
         twitterModel.createSession() {
             (error: NSError?) in
             if error == nil {
+                // TODO -- update to setup hamburgerPage
                 self.performSegueWithIdentifier("loginSegue", sender: self)
             }
             else {

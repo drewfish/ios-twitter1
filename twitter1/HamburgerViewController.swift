@@ -9,7 +9,7 @@
 import UIKit
 
 
-let HAMBURGER_ANIMATION_DURATION = 0.3
+let HAMBURGER_ANIMATION_DURATION: NSTimeInterval = 0.3
 
 
 class HamburgerViewController: UIViewController {
@@ -22,18 +22,52 @@ class HamburgerViewController: UIViewController {
     var viewController: UIViewController?
 
     @IBAction func onProfile(sender: UITapGestureRecognizer) {
-        // TODO -- segue(push) profile page for sessionUser
-        println("HAM onProfile")
+        UIView.animateWithDuration(HAMBURGER_ANIMATION_DURATION, animations: {
+            () -> Void in
+            self.open = false
+            self.render()
+            self.viewController?.performSegueWithIdentifier("profileSegue", sender: self)
+        })
     }
 
     @IBAction func onHome(sender: AnyObject) {
-        // TODO -- show tweetlist, configured as home
-        println("HAM onHome")
+        if let nav = viewController as? UINavigationController {
+            UIView.animateWithDuration(
+                HAMBURGER_ANIMATION_DURATION,
+                animations: {
+                    () -> Void in
+                    self.open = false
+                    self.render()
+                    nav.popToRootViewControllerAnimated(true)
+                },
+                completion: {
+                    (foo: Bool) -> Void in
+                    if let list = nav.topViewController as? TweetListViewController {
+                        list.setContentType(.Home)
+                    }
+                }
+            )
+        }
     }
 
     @IBAction func onMentions(sender: AnyObject) {
-        // TODO -- show tweetlist, configured as mentions
-        println("HAM onMentions")
+        if let nav = viewController as? UINavigationController {
+            UIView.animateWithDuration(
+                HAMBURGER_ANIMATION_DURATION,
+                animations: {
+                    () -> Void in
+                    self.open = false
+                    self.render()
+                    nav.popToRootViewControllerAnimated(true)
+                },
+                completion: {
+                    (foo: Bool) -> Void in
+                    if let list = nav.topViewController as? TweetListViewController {
+                        list.setContentType(.Mentions)
+                    }
+                }
+            )
+        }
     }
 
     @IBAction func onSwipeRight(sender: UISwipeGestureRecognizer) {
@@ -41,11 +75,15 @@ class HamburgerViewController: UIViewController {
             // we're already open
             return
         }
+
+        // for some reason the render() in viewDidLoad() isn't setting up menuView correctly
+        render()
+
+        open = true
         UIView.animateWithDuration(HAMBURGER_ANIMATION_DURATION, animations: {
             () -> Void in
-            self.containerView.frame.origin.x = 200
+            self.render()
         })
-        open = true
     }
 
     @IBAction func onSwipeLeft(sender: UISwipeGestureRecognizer) {
@@ -53,28 +91,28 @@ class HamburgerViewController: UIViewController {
             // we're already closed
             return
         }
+        open = false
         UIView.animateWithDuration(HAMBURGER_ANIMATION_DURATION, animations: {
             () -> Void in
-            self.containerView.frame.origin.x = 0
+            self.render()
         })
-        open = false
+    }
+
+    func render() {
+        menuView.frame.origin.x = open ? 0 : -200
+        containerView.frame.origin.x = open ? 200 : 0
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         authorImage.setImageWithURL(twitterModel.sessionUser!.profileImageURL)
         nameLabel.text = twitterModel.sessionUser!.name
         screennameLabel.text = "@\(twitterModel.sessionUser!.screenname)"
-
         if let vc = viewController {
             vc.view.frame = containerView.frame
             containerView.addSubview(vc.view)
         }
-
-        // in case we get here via some wierd transition
-        self.containerView.frame.origin.x = open ? 200 : 0
+        render()
     }
-
 }
 

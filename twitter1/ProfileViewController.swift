@@ -20,6 +20,10 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if user == nil {
+            user = twitterModel.sessionUser
+        }
+        navigationItem.title = "@\(user!.screenname)"
         authorImage.setImageWithURL(user!.profileImageURL)
         authorImage.layer.cornerRadius = 8.0
         authorImage.layer.masksToBounds = true

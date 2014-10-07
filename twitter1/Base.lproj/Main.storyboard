@@ -155,7 +155,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uQa-f5-bxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="861" y="1069"/>
+            <point key="canvasLocation" x="913" y="1225"/>
         </scene>
         <!--hamburgerPage-->
         <scene sceneID="jym-Af-50L">
@@ -774,7 +774,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vj3-WP-9l0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1747" y="1149"/>
+            <point key="canvasLocation" x="1631" y="1077"/>
         </scene>
         <!--tweetListNav-->
         <scene sceneID="LVf-9U-srf">
@@ -788,6 +788,7 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="AwU-nH-Aci" kind="relationship" relationship="rootViewController" id="5y5-yG-hPv"/>
+                        <segue destination="ZG2-we-I6k" kind="show" identifier="profileSegue" id="PEK-Np-T6V"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XlX-El-7GT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -802,7 +803,7 @@
         <image name="retweetOn" width="600" height="600"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="PEK-Np-T6V"/>
         <segue reference="gLN-Am-6Yv"/>
-        <segue reference="9ye-6K-VsK"/>
     </inferredMetricsTieBreakers>
 </document>

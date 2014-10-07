@@ -12,8 +12,8 @@ import UIKit
 class TweetListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TweetCellDelegate {
 
     enum ContentType: String {
-        case Home = "Home"
-        case Mentions = "Mentions"
+        case Home       = "Home"
+        case Mentions   = "Mentions"
     }
 
     var contentType = ContentType.Home
@@ -23,6 +23,8 @@ class TweetListViewController: UIViewController, UITableViewDataSource, UITableV
 
     func setContentType(type: ContentType) {
         if type != contentType {
+            // FUTURE -- figure out why this causes a crash
+            //tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: false)
             contentType = type
             navigationItem.title = contentType.toRaw()
             tweets = nil
@@ -81,7 +83,7 @@ class TweetListViewController: UIViewController, UITableViewDataSource, UITableV
         }
         self.refreshControl?.endRefreshing()
         MMProgressHUD.showWithStatus("Loading...")
-        twitterModel.homeStatuses(sinceID: sinceID, maxID: nil) {
+        var done = {
             (tweets: [TwitterTweet]?, error: NSError?) -> Void in
             MMProgressHUD.dismiss()
             if error != nil {
@@ -100,6 +102,12 @@ class TweetListViewController: UIViewController, UITableViewDataSource, UITableV
                 self.tweets = more
             }
             self.tableView.reloadData()
+        }
+        switch contentType {
+        case .Home:
+            twitterModel.homeStatuses(sinceID: sinceID, maxID: nil, done: done)
+        case .Mentions:
+            twitterModel.mentionsStatuses(sinceID: sinceID, maxID: nil, done: done)
         }
     }
 
